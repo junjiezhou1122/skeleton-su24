@@ -1,3 +1,7 @@
+import org.apache.commons.lang3.ObjectUtils;
+
+import javax.naming.InitialContext;
+
 /** A data structure to represent a Linked List of Integers.
  * Each IntList represents one node in the overall Linked List.
  */
@@ -48,7 +52,19 @@ public class IntList {
      */
     public int get(int position) {
         //TODO: YOUR CODE HERE
-        return -1;
+        if (position < 0) {
+            throw new IllegalArgumentException("Out of bounds");
+        }
+
+        IntList p = this;
+        for (int i = 0; i < position; i++) {
+            if (p.next == null) {
+                throw new IllegalArgumentException("Out of bounds");
+            }
+            p = p.next;
+        }
+
+        return p.item;
     }
 
     /**
@@ -59,7 +75,16 @@ public class IntList {
      */
     public String toString() {
         //TODO: YOUR CODE HERE
-        return null;
+        StringBuilder s = new StringBuilder();
+        IntList p = this;
+        while (p.next != null) {
+            s.append(Integer.toString(p.item));
+            s.append(' ');
+            p = p.next;
+        }
+        s.append(Integer.toString(p.item));
+
+        return s.toString();
     }
 
     /**
@@ -85,8 +110,10 @@ public class IntList {
         IntList otherLst = (IntList) obj;
 
         //TODO: YOUR CODE HERE
+        String x1 = this.toString();
+        String x2 = otherLst.toString();
+        return x1.equals(x2);
 
-        return false;
     }
 
     /**
@@ -96,6 +123,11 @@ public class IntList {
      */
     public void add(int value) {
         //TODO: YOUR CODE HERE
+        IntList p = this;
+        while (p.next != null){
+            p = p.next;
+        }
+        p.next = new IntList(value);
     }
 
     /**
@@ -105,7 +137,15 @@ public class IntList {
      */
     public int smallest() {
         //TODO: YOUR CODE HERE
-        return -1;
+        IntList p = this;
+        int min = p.item;
+        while (p.next != null) {
+            p = p.next;
+            if (p.item < min) {
+                min = p.item;
+            }
+        }
+        return min;
     }
 
     /**
@@ -115,7 +155,15 @@ public class IntList {
      */
     public int squaredSum() {
         //TODO: YOUR CODE HERE
-        return -1;
+        IntList p = this;
+        int sum = 0;
+        while (p.next !=null) {
+            sum += p.item * p.item;
+            p = p.next;
+        }
+        sum += p.item * p.item;
+
+        return sum;
     }
 
     /**
@@ -172,8 +220,45 @@ public class IntList {
      * @return new list with A followed by B.
      */
     public static IntList catenate(IntList A, IntList B) {
-        //TODO: YOUR CODE HERE
-        return null;
+        if (A == null) return copyList(B);
+        if (B == null) return copyList(A);
+
+        IntList newList = new IntList(A.item);
+        IntList current = newList;
+        A = A.next;
+
+        while (A != null) {
+            current.next = new IntList(A.item);
+            current = current.next;
+            A = A.next;
+        }
+
+        while (B != null) {
+            current.next = new IntList(B.item);
+            current = current.next;
+            B = B.next;
+        }
+
+        return newList;
+    }
+
+    public static IntList copyList(IntList l) {
+        if (l == null) {
+            return null;
+        }
+
+        IntList newList;
+        newList = new IntList(l.item);
+        IntList current = newList;
+        l = l.next;
+
+        while (l != null) {
+            current.next = new IntList(l.item);
+            current = current.next;
+            l = l.next;
+        }
+
+        return newList;
     }
 
     /**
@@ -186,6 +271,19 @@ public class IntList {
      */
     public static IntList dcatenate(IntList A, IntList B) {
         //TODO: YOUR CODE HERE
-        return null;
+        if (A == null) return B;  // If A is null, return B as the result.
+        if (B == null) return A;  // If B is null, return A as is.
+
+        IntList current = A;      // Start from the head of A.
+
+        // Traverse to the end of A.
+        while (current.next != null) {
+            current = current.next;
+        }
+
+        // Link the last node of A to the first node of B.
+        current.next = B;
+
+        return A;  // Return the modified A list, which now includes B.
     }
 }

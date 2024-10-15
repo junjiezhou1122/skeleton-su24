@@ -153,11 +153,74 @@ public class IntListTest {
 
     @Test
     public void testCatenate() {
-        // TODO: Add tests
+        IntList originalA = IntList.of(1, 2, 3);
+        IntList originalB = IntList.of(4, 5, 6);
+        IntList.catenate(originalA, originalB);
+        assertWithMessage("Original list A should remain unchanged").that(originalA).isEqualTo(IntList.of(1, 2, 3));
+        assertWithMessage("Original list B should remain unchanged").that(originalB).isEqualTo(IntList.of(4, 5, 6));
+
+        // Test catenating with an empty list
+        originalA = IntList.of(1, 2, 3);
+        originalB = IntList.of();
+        IntList.catenate(originalA, originalB);
+        assertWithMessage("Original list A should remain unchanged").that(originalA).isEqualTo(IntList.of(1, 2, 3));
+        assertWithMessage("Original list B should remain unchanged").that(originalB).isEqualTo(IntList.of());
+
+        // Test catenating an empty list with a non-empty list
+        originalA = IntList.of();
+        originalB = IntList.of(4, 5, 6);
+        IntList.catenate(originalA, originalB);
+        assertWithMessage("Original list A should remain unchanged").that(originalA).isEqualTo(IntList.of());
+        assertWithMessage("Original list B should remain unchanged").that(originalB).isEqualTo(IntList.of(4, 5, 6));
+
+        // Test catenating two empty lists
+        originalA = IntList.of();
+        originalB = IntList.of();
+        IntList.catenate(originalA, originalB);
+        assertWithMessage("Original list A should remain unchanged").that(originalA).isEqualTo(IntList.of());
+        assertWithMessage("Original list B should remain unchanged").that(originalB).isEqualTo(IntList.of());
+
+        // Test catenating single-element lists
+        originalA = IntList.of(1);
+        originalB = IntList.of(2);
+        IntList.catenate(originalA, originalB);
+        assertWithMessage("Original list A should remain unchanged").that(originalA).isEqualTo(IntList.of(1));
+        assertWithMessage("Original list B should remain unchanged").that(originalB).isEqualTo(IntList.of(2));
     }
 
     @Test
     public void testDCatenate() {
-        // TODO: Add test
+        // Test dcatenating two non-empty lists
+        IntList originalA = IntList.of(1, 2, 3);
+        IntList originalB = IntList.of(4, 5, 6);
+        IntList result = IntList.dcatenate(originalA, originalB);
+        assertWithMessage("Result list should be the concatenation of A and B").that(result).isEqualTo(IntList.of(1, 2, 3, 4, 5, 6));
+        assertWithMessage("Original list A should be modified").that(originalA).isEqualTo(IntList.of(1, 2, 3, 4, 5, 6));
+        assertWithMessage("Original list B should remain unchanged").that(originalB).isEqualTo(IntList.of(4, 5, 6));
+
+        // Test dcatenating with an empty list
+        originalA = IntList.of(1, 2, 3);
+        originalB = IntList.of();
+        result = IntList.dcatenate(originalA, originalB);
+        assertWithMessage("Result list should be the same as original A").that(result).isEqualTo(IntList.of(1, 2, 3));
+        assertWithMessage("Original list A should remain unchanged").that(originalA).isEqualTo(IntList.of(1, 2, 3));
+        assertWithMessage("Original list B should remain unchanged").that(originalB).isEqualTo(IntList.of());
+
+
+        // Test dcatenating two empty lists
+        originalA = IntList.of();
+        originalB = IntList.of();
+        result = IntList.dcatenate(originalA, originalB);
+        assertWithMessage("Result list should be empty").that(result).isEqualTo(IntList.of());
+        assertWithMessage("Original list A should remain unchanged").that(originalA).isEqualTo(IntList.of());
+        assertWithMessage("Original list B should remain unchanged").that(originalB).isEqualTo(IntList.of());
+
+        // Test dcatenating single-element lists
+        originalA = IntList.of(1);
+        originalB = IntList.of(2);
+        result = IntList.dcatenate(originalA, originalB);
+        assertWithMessage("Result list should be the concatenation of A and B").that(result).isEqualTo(IntList.of(1, 2));
+        assertWithMessage("Original list A should be modified").that(originalA).isEqualTo(IntList.of(1, 2));
+        assertWithMessage("Original list B should remain unchanged").that(originalB).isEqualTo(IntList.of(2));
     }
 }
